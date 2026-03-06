@@ -60,7 +60,7 @@
 
 | # | Lab Title | Topic | Status |
 |---|-----------|-------|--------|
-| 01 | [DDA Line Drawing](./Lab-01-DDA-Line/) | Scan Conversion |
+| 01 | [DDA Line Drawing](./Lab-01-DDA-Line/) | Scan Conversion | 🔄 Pending |
 | 02 | [Bresenham's Line Drawing](./Lab-02-Bresenham-Line/) | Scan Conversion | 🔄 Pending |
 | 03 | [Circle Drawing — Raster](./Lab-03-Circle-Raster/) | Scan Conversion | 🔄 Pending |
 | 04 | [Midpoint Circle + Arc & Sector](./Lab-04-Midpoint-Circle/) | Scan Conversion | 🔄 Pending |
