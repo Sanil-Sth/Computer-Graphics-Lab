@@ -83,23 +83,17 @@
 ---
 
 ## 📁 Repository Structure
-Computer-Graphics-Lab/
-    │
-    ├── README.md      ← You are here
-    │
-    ├── Lab-01-DDA-Line/
-    │   ├── README.md  ← Lab report
-    │   ├── dda_line.c ← Source code
-    │   └── output.png ← Output
-    │
-    ├── Lab-02-Bresenham-Line/
-    ├── Lab-03-Circle-Raster/
-    ├── Lab-04-Midpoint-Circle/
-    ├── Lab-05-Rotate-Point/
-    ├── Lab-06-Rotate-Triangle/
-    ├── Lab-07-Scale-Triangle/
-    ├── Lab-08-Translate-Triangle/
-    └── Lab-09-Reflect-Triangle/
----
+
+| Folder | Contents |
+|--------|----------|
+| `Lab-01-DDA-Line/` | README.md, dda_line.c, output.png |
+| `Lab-02-Bresenham-Line/` | README.md, bresenham_line.c, output.png |
+| `Lab-03-Circle-Raster/` | README.md, circle_raster.c, output.png |
+| `Lab-04-Midpoint-Circle/` | README.md, midpoint_circle.c, output.png |
+| `Lab-05-Rotate-Point/` | README.md, rotate_point.c, output.png |
+| `Lab-06-Rotate-Triangle/` | README.md, rotate_triangle.c, output.png |
+| `Lab-07-Scale-Triangle/` | README.md, scale_triangle.c, output.png |
+| `Lab-08-Translate-Triangle/` | README.md, translate_triangle.c, output.png |
+| `Lab-09-Reflect-Triangle/` | README.md, reflect_triangle.c, output.png |
 
 > 📌 *Each lab folder contains a detailed README with theory, algorithm, source code, and output screenshot.*
