@@ -1,6 +1,4 @@
-# Computer-Graphics-Lab
-Lab programs for Computer Graphics (CSC209) - Semester III
-# 🎨 Computer Graphics Lab — CSC209
+# Computer Graphics Lab — CSC209
 
 
 
