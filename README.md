@@ -83,17 +83,54 @@
 ---
 
 ## 📁 Repository Structure
+```
+Computer-Graphics-Lab/
+│
+├── README.md
+│
+├── Lab-01-DDA-Line/
+│   ├── README.md
+│   ├── dda_line.cpp
+│   ├── output_console.png
+│   ├── output_gui.png
+│   └── outputzoomed.png
+│
+├── Lab-02-Bresenham-Line/
+│   ├── README.md
+│   ├── bresenham_line.cpp
+│   ├── output_console.png
+│   ├── output_gui.png
+│   └── output_zoomed.png
+│
+├── Lab-03-Circle-Raster/
+│   ├── README.md
+│   └── circle_raster.cpp
+│
+├── Lab-04-Midpoint-Circle/
+│   ├── README.md
+│   └── midpoint_circle.cpp
+│
+├── Lab-05-Rotate-Point/
+│   ├── README.md
+│   └── rotate_point.cpp
+│
+├── Lab-06-Rotate-Triangle/
+│   ├── README.md
+│   └── rotate_triangle.cpp
+│
+├── Lab-07-Scale-Triangle/
+│   ├── README.md
+│   └── scale_triangle.cpp
+│
+├── Lab-08-Translate-Triangle/
+│   ├── README.md
+│   └── translate_triangle.cpp
+│
+└── Lab-09-Reflect-Triangle/
+    ├── README.md
+    └── reflect_triangle.cpp
+```
 
-| Folder | Contents |
-|--------|----------|
-| `Lab-01-DDA-Line/` | README.md, dda_line.c, output.png |
-| `Lab-02-Bresenham-Line/` | README.md, bresenham_line.c, output.png |
-| `Lab-03-Circle-Raster/` | README.md, circle_raster.c, output.png |
-| `Lab-04-Midpoint-Circle/` | README.md, midpoint_circle.c, output.png |
-| `Lab-05-Rotate-Point/` | README.md, rotate_point.c, output.png |
-| `Lab-06-Rotate-Triangle/` | README.md, rotate_triangle.c, output.png |
-| `Lab-07-Scale-Triangle/` | README.md, scale_triangle.c, output.png |
-| `Lab-08-Translate-Triangle/` | README.md, translate_triangle.c, output.png |
-| `Lab-09-Reflect-Triangle/` | README.md, reflect_triangle.c, output.png |
+> 📌 *Each lab folder contains a detailed README with theory, algorithm, source code, and output screenshots.*
 
 > 📌 *Each lab folder contains a detailed README with theory, algorithm, source code, and output screenshot.*
