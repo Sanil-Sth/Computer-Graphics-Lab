@@ -132,5 +132,3 @@ Computer-Graphics-Lab/
 ```
 
 > 📌 *Each lab folder contains a detailed README with theory, algorithm, source code, and output screenshots.*
-
-> 📌 *Each lab folder contains a detailed README with theory, algorithm, source code, and output screenshot.*
