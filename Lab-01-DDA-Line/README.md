@@ -151,7 +151,7 @@ int main() {
 ### 3. Zoomed Output
 *Zoomed in view clearly showing individual pixels plotted by the DDA algorithm*
 
-![Zoomed Output](./output_zoomed.png)
+![Zoomed Output](./outputzoomed.png)
 
 > 💡 The zoomed view demonstrates the core concept of DDA — each dot is an individual pixel placed by `putpixel()` at rounded floating point coordinates.
 
