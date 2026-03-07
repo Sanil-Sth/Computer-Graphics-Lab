@@ -76,14 +76,6 @@ Step 9: Stop
 ## 💻 Source Code
 
 ```cpp
-/*
- * Lab 01 - 2D Line Drawing using DDA Algorithm
- * Course : Computer Graphics (CSC209)
- * Author : Sanil Sthapit
- * IDE    : Dev-C++ with graphics.h (WinBGIm)
- * OS     : Windows
- */
-
 #include <stdio.h>
 #include <conio.h>
 #include <graphics.h>
