@@ -9,21 +9,15 @@ from docx.oxml import OxmlElement
 # ─────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────
-
-# Output folder where all docx files will be saved
 OUTPUT_DIR = "CG-Lab-Outputs"
-
-# The exact order images should appear in the doc
 IMAGE_ORDER = ["output_console.png", "output_gui.png", "output_zoomed.png"]
 
 # ─────────────────────────────────────────────
-# HELPER: Add a bordered box around a paragraph
-# (mimics the box style in DSA lab output)
+# HELPER: Add border to all 4 sides
 # ─────────────────────────────────────────────
-def add_border_to_paragraph(paragraph):
+def add_border(paragraph):
     pPr = paragraph._p.get_or_add_pPr()
     pBdr = OxmlElement('w:pBdr')
-
     for side in ['top', 'left', 'bottom', 'right']:
         border = OxmlElement(f'w:{side}')
         border.set(qn('w:val'), 'single')
@@ -31,13 +25,12 @@ def add_border_to_paragraph(paragraph):
         border.set(qn('w:space'), '4')
         border.set(qn('w:color'), '000000')
         pBdr.append(border)
-
     pPr.append(pBdr)
 
 # ─────────────────────────────────────────────
-# HELPER: Set paragraph spacing
+# HELPER: Set spacing
 # ─────────────────────────────────────────────
-def set_spacing(paragraph, before=0, after=0):
+def set_spacing(paragraph, before=40, after=40):
     pPr = paragraph._p.get_or_add_pPr()
     spacing = OxmlElement('w:spacing')
     spacing.set(qn('w:before'), str(before))
@@ -45,93 +38,111 @@ def set_spacing(paragraph, before=0, after=0):
     pPr.append(spacing)
 
 # ─────────────────────────────────────────────
-# MAIN: Generate docx for a single lab folder
+# HELPER: Set Times New Roman font on a run
+# ─────────────────────────────────────────────
+def set_font(run, bold=False, size_pt=14):
+    run.font.name = 'Times New Roman'
+    run.font.size = Pt(size_pt)
+    run.bold = bold
+    # Also set via XML for full compatibility
+    rPr = run._r.get_or_add_rPr()
+    rFonts = OxmlElement('w:rFonts')
+    rFonts.set(qn('w:ascii'), 'Times New Roman')
+    rFonts.set(qn('w:hAnsi'), 'Times New Roman')
+    rFonts.set(qn('w:cs'),    'Times New Roman')
+    rPr.insert(0, rFonts)
+
+# ─────────────────────────────────────────────
+# MAIN
 # ─────────────────────────────────────────────
 def generate_doc_for_lab(lab_folder):
-
-    # e.g. "Lab-01-DDA-Line/" -> "Lab-01-DDA-Line"
     lab_name = lab_folder.rstrip('/')
 
-    # Find which images exist in this lab folder, in the correct order
+    # Collect images in order
     images_found = []
     for img_name in IMAGE_ORDER:
         img_path = os.path.join(lab_folder, img_name)
         if os.path.exists(img_path):
-            images_found.append(img_path)
+            images_found.append((img_name, img_path))
 
-    # Also catch any output_*.png not in the standard order list
+    # Any extra output_*.png not in standard list
     all_outputs = glob.glob(os.path.join(lab_folder, 'output_*.png'))
+    known = [n for n, _ in images_found]
     for img in sorted(all_outputs):
-        img_filename = os.path.basename(img)
-        if img_filename not in IMAGE_ORDER and img not in images_found:
-            images_found.append(img)
+        img_name = os.path.basename(img)
+        if img_name not in known:
+            images_found.append((img_name, img))
 
-    # Skip if no output images found
     if not images_found:
-        print(f"  [SKIP] No output images found in {lab_folder}")
+        print(f"  [SKIP] No output images in {lab_folder}")
         return
 
-    print(f"  [BUILD] {lab_name} → {len(images_found)} image(s) found")
+    print(f"  [BUILD] {lab_name} -> {len(images_found)} image(s)")
 
-    # Create the Word document
     doc = Document()
 
-    # Set narrow margins (matching DSA lab style)
+    # Margins
     section = doc.sections[0]
     section.top_margin    = Inches(1)
     section.bottom_margin = Inches(1)
     section.left_margin   = Inches(1)
     section.right_margin  = Inches(1)
 
-    # For each image, add: "OUTPUT :" label + bordered image block
-    for i, img_path in enumerate(images_found):
+    # ── "OUTPUTS :" heading paragraph ──
+    heading = doc.add_paragraph()
+    run = heading.add_run("OUTPUTS :")
+    set_font(run, bold=True, size_pt=14)
+    add_border(heading)
+    set_spacing(heading, before=40, after=40)
 
-        # "OUTPUT :" heading
-        label = doc.add_paragraph()
-        label_run = label.add_run("OUTPUT :")
-        label_run.bold = True
-        label_run.font.size = Pt(12)
-        set_spacing(label, before=100, after=40)
+    # ── Empty spacer ──
+    spacer = doc.add_paragraph()
+    add_border(spacer)
+    set_spacing(spacer, before=40, after=40)
 
-        # Image inside a bordered paragraph
+    # ── Each image ──
+    for i, (img_name, img_path) in enumerate(images_found):
+
+        # "Zoomed In Figure:" label before the last/zoomed image
+        if img_name == "output_zoomed.png":
+            label_para = doc.add_paragraph()
+            label_run = label_para.add_run("Zoomed In Figure:")
+            set_font(label_run, bold=False, size_pt=12)
+            add_border(label_para)
+            set_spacing(label_para, before=40, after=40)
+
         img_para = doc.add_paragraph()
         img_para.alignment = WD_ALIGN_PARAGRAPH.LEFT
-        add_border_to_paragraph(img_para)
+        add_border(img_para)
         set_spacing(img_para, before=40, after=40)
 
         run = img_para.add_run()
         try:
             run.add_picture(img_path, width=Inches(5.5))
         except Exception as e:
-            print(f"    [WARN] Could not add image {img_path}: {e}")
-            img_para.add_run(f"[Image not found: {os.path.basename(img_path)}]")
+            print(f"    [WARN] {img_path}: {e}")
+            img_para.add_run(f"[Image not found: {img_name}]")
 
-        # Spacer between images (except after last one)
-        if i < len(images_found) - 1:
-            spacer = doc.add_paragraph()
-            set_spacing(spacer, before=0, after=100)
+    # ── Closing spacer ──
+    closing = doc.add_paragraph()
+    add_border(closing)
+    set_spacing(closing, before=40, after=40)
 
-    # ─── Save the docx ───
+    # Save
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    output_filename = f"{lab_name}-output_print.docx"
-    output_path = os.path.join(OUTPUT_DIR, output_filename)
-    doc.save(output_path)
-    print(f"  [SAVED] {output_path}")
+    out_path = os.path.join(OUTPUT_DIR, f"{lab_name}-output_print.docx")
+    doc.save(out_path)
+    print(f"  [SAVED] {out_path}")
 
 # ─────────────────────────────────────────────
 # ENTRY POINT
 # ─────────────────────────────────────────────
 if __name__ == "__main__":
-    print("🔍 Scanning for lab folders...")
-
-    # Find all Lab-* folders, sorted so they go Lab-01, Lab-02, ...
+    print("Scanning for lab folders...")
     lab_folders = sorted(glob.glob("Lab-*/"))
-
     if not lab_folders:
-        print("No lab folders found. Make sure you run this from the repo root.")
+        print("No lab folders found. Run from repo root.")
         exit(1)
-
     for lab in lab_folders:
         generate_doc_for_lab(lab)
-
-    print("\n✅ Done! Check the CG-Lab-Outputs/ folder.")
+    print("\nDone! Check CG-Lab-Outputs/")
